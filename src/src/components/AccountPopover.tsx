@@ -4,12 +4,12 @@ import { AppContext } from "./ContextProvider";
 
 export const AccountPopover = () => {
 
-    const { user } = useContext(AppContext);
+    const { state } = useContext(AppContext);
 
     return (
         <div id="accountPopover">
             <nav id="accountNav">
-                {user ? 
+                {state.user ? 
                     <>
                         <ul>
                             <li>My Orders</li>

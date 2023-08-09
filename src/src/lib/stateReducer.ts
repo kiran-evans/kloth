@@ -1,8 +1,7 @@
-import { Dispatch, Reducer } from "react";
+import { Reducer } from "react";
 
 export type AppState = {
-    user: any,
-    dispatch: Dispatch<ContextAction>
+    user: any
 }
 
 export type ContextAction = {
