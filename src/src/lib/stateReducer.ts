@@ -10,8 +10,13 @@ export type ContextAction = {
 }
 
 export const stateReducer = ((state, action) => {
+    const newState = structuredClone(state);
     switch (action.type) {
+        case 'SET_USER':
+            newState.user = action.payload;
+            break;
         default:
             return state;
     }
+    return newState;
 }) satisfies Reducer<AppState, ContextAction>
