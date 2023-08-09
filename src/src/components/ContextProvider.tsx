@@ -6,15 +6,15 @@ const initState: AppState = {
     dispatch: () => {}
 };
 
-export const Context = createContext(initState);
+export const AppContext = createContext(initState);
 
 export const ContextProvider = ({ children }: any) => {
     const [state, dispatch] = useReducer(stateReducer, initState);
 
     return (
-        <Context.Provider value={{
+        <AppContext.Provider value={{
             ...initState,
             dispatch
-        }}>{children}</Context.Provider>
+        }}>{children}</AppContext.Provider>
     )
 }
