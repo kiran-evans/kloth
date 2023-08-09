@@ -7,14 +7,11 @@ function App() {
     return (
         <>
             <Header />
-
-            <main>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path='/login' element={<LoginPage />} />
-                    </Routes>
-                </BrowserRouter>                
-            </main>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/login' element={<LoginPage />} />
+                </Routes>
+            </BrowserRouter>
 
             <footer>
                 
