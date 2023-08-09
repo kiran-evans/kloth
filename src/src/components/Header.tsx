@@ -8,7 +8,7 @@ export const Header = () => {
             </div>
 
             <nav id="categoryNav">
-                
+                {/* Get list of categories and show them as a list here */}
             </nav>
 
             <div id="searchContainer">

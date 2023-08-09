@@ -1,5 +1,7 @@
-import './App.css'
-import { Header } from './components/Header'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import './App.css';
+import { Header } from './components/Header';
+import { LoginPage } from './pages/LoginPage';
 
 function App() {
     return (
@@ -7,7 +9,11 @@ function App() {
             <Header />
 
             <main>
-
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/login' element={<LoginPage />} />
+                    </Routes>
+                </BrowserRouter>                
             </main>
 
             <footer>
