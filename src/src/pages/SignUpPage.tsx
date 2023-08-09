@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
     return (
         <main>
-            <h1>Login</h1>
+            <h1>Create Account</h1>
 
             <form id="loginForm">
                 <label htmlFor="email">Email</label>
@@ -16,7 +16,7 @@ export const LoginPage = () => {
             </form>
 
             {/* Login with 3rd party provider */}
-            <Link to="/signup" title="Create Account">Don't have an account?</Link>
+            <Link to="/login" title="Login">Already have an account?</Link>
 
         </main>
     )
