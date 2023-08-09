@@ -1,6 +1,12 @@
 import { AccountCircle, ShoppingCart } from '@mui/icons-material';
+import { Collapse } from '@mui/material';
+import { useState } from 'react';
+import { AccountPopover } from './AccountPopover';
 
 export const Header = () => {
+
+    const [popoverIsOpen, setPopoverIsOpen] = useState(false);
+
     return (
         <header>
             <div id="logoContainer">
@@ -16,9 +22,18 @@ export const Header = () => {
             </div>
 
             <div id="iconsContainer">
-                <ShoppingCart />
-                <AccountCircle />
+                <div id="cartIcon">
+                    <ShoppingCart />
+                </div>
+                <div id="accountIcon" onClick={() => setPopoverIsOpen(!popoverIsOpen)}>
+                    <AccountCircle />
+                </div>
             </div>
+
+            {/* Popover */}
+            <Collapse in={popoverIsOpen}>
+                <AccountPopover />
+            </Collapse>
         </header>
     )
 }
