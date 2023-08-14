@@ -1,7 +1,9 @@
 import { passwordStrength } from 'check-password-strength';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FormEvent, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../components/ContextProvider";
+import { fb } from '../lib/firebase';
 
 export const SignUpPage = () => {
 
@@ -29,10 +31,16 @@ export const SignUpPage = () => {
         setIsFetching(true);
 
         try {
+            // Create new Firebase Auth user (this also establishes a session)
+            const userCredential = await createUserWithEmailAndPassword(fb.auth, formValues.email, formValues.password);
+
+            // Get an id token and pass it to the server to be used to create PGDB entry
+            const idToken = await userCredential.user.getIdToken();
             const res = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
                 method: "POST",
-                body: JSON.stringify(formValues)
+                body: JSON.stringify({ idToken })
             });
+            
             dispatch({ type: 'SET_USER', payload: res.json() });
         } catch (err: any) {
             setErrorMsg(String(err));
