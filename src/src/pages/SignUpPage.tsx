@@ -36,9 +36,14 @@ export const SignUpPage = () => {
 
             // Get an id token and pass it to the server to be used to create PGDB entry
             const idToken = await userCredential.user.getIdToken();
+            console.log(idToken);
+            
             const res = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
                 method: "POST",
-                body: JSON.stringify({ idToken })
+                body: JSON.stringify({ idToken: idToken }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
             
             dispatch({ type: 'SET_USER', payload: res.json() });
