@@ -16,7 +16,7 @@ export const LoginPage = () => {
             const userCredential = await signInWithEmailAndPassword(fb.auth, credentials.email, credentials.password);
             const idToken = await userCredential.user.getIdToken();
             
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/user`, {
                 method: "POST",
                 body: JSON.stringify({ idToken })
             });

@@ -1,8 +1,8 @@
+import { Google } from '@mui/icons-material';
 import { passwordStrength } from 'check-password-strength';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { FormEvent, useContext, useState } from "react";
+import { createUserWithEmailAndPassword, getRedirectResult, signInWithRedirect } from 'firebase/auth';
+import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { AppContext } from "../components/ContextProvider";
 import { fb } from '../lib/firebase';
 
 export const SignUpPage = () => {
@@ -15,7 +15,6 @@ export const SignUpPage = () => {
 
     const [errorMsg, setErrorMsg] = useState("");
     const [isFetching, setIsFetching] = useState(false);
-    const { dispatch } = useContext(AppContext);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -38,15 +37,42 @@ export const SignUpPage = () => {
             const idToken = await userCredential.user.getIdToken();
             console.log(idToken);
             
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/user`, {
                 method: "POST",
                 body: JSON.stringify({ idToken: idToken }),
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
+
+        } catch (err: any) {
+            setErrorMsg(String(err));
+        }
+        
+        setIsFetching(false);
+    }
+
+    const handleSignInWithGoogle = async () => {            
+        setIsFetching(true);
+
+        try {
+            await signInWithRedirect(fb.auth, fb.google);
+
+            const userCredential = await getRedirectResult(fb.auth);
+            if (!userCredential) throw "Failed to get redirect result from Google.";
+
+            // Get an id token and pass it to the server to be used to create PGDB entry
+            const idToken = await userCredential.user.getIdToken();
+            console.log(idToken);
             
-            dispatch({ type: 'SET_USER', payload: res.json() });
+            await fetch(`${import.meta.env.VITE_API_URL}/user`, {
+                method: "POST",
+                body: JSON.stringify({ idToken: idToken }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
         } catch (err: any) {
             setErrorMsg(String(err));
         }
@@ -74,6 +100,7 @@ export const SignUpPage = () => {
 
             {/* Login with 3rd party provider */}
             {<>
+                <button disabled={isFetching} onClick={() => handleSignInWithGoogle()}><Google />&nbsp;Sign Up with Google</button>
             </>}
             <Link to="/login" title="Login">Already have an account?</Link>
 
