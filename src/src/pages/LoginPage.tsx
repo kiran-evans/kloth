@@ -2,7 +2,6 @@ import { Google } from '@mui/icons-material';
 import { passwordStrength } from 'check-password-strength';
 import { createUserWithEmailAndPassword, getRedirectResult, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
 import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
 import { fb } from "../lib/firebase";
 
 export const LoginPage = () => {
@@ -16,19 +15,16 @@ export const LoginPage = () => {
         repeatPassword: ""
     });
 
+    // Login handlers
+    // Third-party login handlers also double as sign up handlers as they automatically login the Firebase Auth user after successful sign up
     const handleLoginWithEmail = async (e: FormEvent) => {
         e.preventDefault();
             
         setIsFetching(true);
         
         try {
-            const userCredential = await signInWithEmailAndPassword(fb.auth, credentials.email, credentials.password);
-            const idToken = await userCredential.user.getIdToken();
-            
-            await fetch(`${import.meta.env.VITE_API_URL}/user`, {
-                method: "POST",
-                body: JSON.stringify({ idToken })
-            });
+            // Sign in Firebase Auth user with email and password
+            await signInWithEmailAndPassword(fb.auth, credentials.email, credentials.password);            
 
         } catch (err: any) {
             setErrorMsg(String(err));
@@ -37,6 +33,23 @@ export const LoginPage = () => {
         setIsFetching(false);
     }
 
+    const handleLoginWithGoogle = async () => {            
+        setIsFetching(true);
+
+        try {
+            await signInWithRedirect(fb.auth, fb.google);
+
+            const userCredential = await getRedirectResult(fb.auth);
+            if (!userCredential) throw "Failed to get redirect result from Google.";
+
+        } catch (err: any) {
+            setErrorMsg(String(err));
+        }
+        
+        setIsFetching(false);
+    }
+
+    // Sign up handlers
     const handleSignUpWithEmail = async (e: FormEvent) => {
         e.preventDefault();
         if (credentials.password !== credentials.repeatPassword) return setErrorMsg("Passwords do not match.");
@@ -55,43 +68,10 @@ export const LoginPage = () => {
             const userCredential = await createUserWithEmailAndPassword(fb.auth, credentials.email, credentials.password);
 
             // Get an id token and pass it to the server to be used to create PGDB entry
-            const idToken = await userCredential.user.getIdToken();
-            console.log(idToken);
-            
+            const idToken = await userCredential.user.getIdToken();            
             await fetch(`${import.meta.env.VITE_API_URL}/user`, {
                 method: "POST",
-                body: JSON.stringify({ idToken: idToken }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-        } catch (err: any) {
-            setErrorMsg(String(err));
-        }
-        
-        setIsFetching(false);
-    }
-
-    const handleSignInWithGoogle = async () => {            
-        setIsFetching(true);
-
-        try {
-            await signInWithRedirect(fb.auth, fb.google);
-
-            const userCredential = await getRedirectResult(fb.auth);
-            if (!userCredential) throw "Failed to get redirect result from Google.";
-
-            // Get an id token and pass it to the server to be used to create PGDB entry
-            const idToken = await userCredential.user.getIdToken();
-            console.log(idToken);
-            
-            await fetch(`${import.meta.env.VITE_API_URL}/user`, {
-                method: "POST",
-                body: JSON.stringify({ idToken: idToken }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                body: JSON.stringify({ idToken })
             });
 
         } catch (err: any) {
@@ -105,7 +85,7 @@ export const LoginPage = () => {
         <main>
             {isNewUser ?
                 <>
-                    <h1>Create Account</h1>
+                    <h1>Sign Up</h1>
 
                     <form id="loginForm" onSubmit={e => handleSignUpWithEmail(e)}>
                         <label htmlFor="email">Email</label>
@@ -123,9 +103,9 @@ export const LoginPage = () => {
 
                     {/* Login with 3rd party provider */}
                     {<>
-                        <button disabled={isFetching} onClick={() => handleSignInWithGoogle()}><Google />&nbsp;Sign Up with Google</button>
+                        <button disabled={isFetching} onClick={() => handleLoginWithGoogle()}><Google />&nbsp;Sign Up with Google</button>
                     </>}
-                    <Link to="/login" title="Login">Already have an account?</Link>
+                    <a title="Login" onClick={() => setIsNewUser(false)}>Already have an account?</a>
                 </>
                 :
                 <>
@@ -142,7 +122,10 @@ export const LoginPage = () => {
                     </form>
 
                     {/* Login with 3rd party provider */}
-                    <a title="Create Account" onClick={() => setIsNewUser(true)}>Don't have an account?</a>
+                    {<>
+                        <button disabled={isFetching} onClick={() => handleLoginWithGoogle()}><Google />&nbsp;Login with Google</button>
+                    </>}
+                    <a title="Sign Up" onClick={() => setIsNewUser(true)}>Don't have an account?</a>
                 </>            
             }
 
