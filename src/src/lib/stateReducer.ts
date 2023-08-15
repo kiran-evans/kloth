@@ -10,7 +10,7 @@ export type ContextAction = {
 }
 
 export const stateReducer = ((state, action) => {
-    const newState = structuredClone(state);
+    const newState = { ...state };
     switch (action.type) {
         case 'SET_USER':
             newState.user = action.payload;
