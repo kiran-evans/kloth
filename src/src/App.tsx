@@ -4,7 +4,6 @@ import './App.css';
 import { AppContext } from './components/ContextProvider';
 import { Header } from './components/Header';
 import { LoginPage } from './pages/LoginPage';
-import { SignUpPage } from './pages/SignUpPage';
 
 function App() {
 
@@ -16,7 +15,6 @@ function App() {
             
             <Routes>
                 <Route path='/login' element={!state.user && <LoginPage />} />
-                <Route path='/signup' element={!state.user && <SignUpPage />} />
             </Routes>
 
             <footer>
