@@ -1,27 +1,29 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
-import { AppContext } from "./ContextProvider";
+import { Link, useNavigate } from "react-router-dom";
+import { fb } from "../lib/firebase";
 
 export const AccountPopover = () => {
+    const navigator = useNavigate();
 
-    const { state } = useContext(AppContext);
+    const handleLogout = async () => {
+        await fb.auth.signOut();
+        navigator('/');
+    }
 
     return (
         <div id="accountPopover">
             <nav id="accountNav">
-                {state.user ? 
+                {fb.auth.currentUser ? 
                     <>
                         <ul>
                             <li>My Orders</li>
                             <li>My Account</li>
                             <li>Settings</li>
                         </ul>
-                        <button>Logout</button>
+                        <button onClick={() => handleLogout()}>Logout</button>
                     </>
                     :
                     <>
-                        <Link to="/login"><button>Login</button></Link>
-                        <Link to="/signup"><button>Create Account</button></Link>
+                        <Link to="/login"><button>Login / Create Account</button></Link>
                     </>
                 }
             </nav>

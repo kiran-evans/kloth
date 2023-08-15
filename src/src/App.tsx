@@ -1,20 +1,19 @@
-import { useContext } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { AppContext } from './components/ContextProvider';
 import { Header } from './components/Header';
+import { fb } from './lib/firebase';
 import { LoginPage } from './pages/LoginPage';
+import { MainPage } from './pages/MainPage';
 
 function App() {
-
-    const { state } = useContext(AppContext);
 
     return (
         <BrowserRouter>
             <Header />
             
             <Routes>
-                <Route path='/login' element={!state.user && <LoginPage />} />
+                <Route path='/' element={<MainPage />} />
+                <Route path='/login' element={fb.auth.currentUser ? <Navigate to="/" /> : <LoginPage />} />
             </Routes>
 
             <footer>
