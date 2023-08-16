@@ -10,14 +10,15 @@ export const ProductPage = () => {
     const [productData, setProductData] = useState({
         name: "",
         description: "",
-        price: 0
+        price: 0,
+        imageUrl: ""
     });
 
     useEffect(() => {
         setIsFetching(true);
         (async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/product?id=${id}`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/product/${id}`);
                 setProductData(await res.json());
 
             } catch (err: any) {
@@ -31,6 +32,7 @@ export const ProductPage = () => {
         <main>
             {isFetching ? <CircularProgress /> :
                 <>
+                    <img src={productData.imageUrl} />
                     <h1>{productData.name}</h1>
                     <p>{productData.description}</p>
                     <p>{productData.price}</p>

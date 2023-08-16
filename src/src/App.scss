@@ -112,6 +112,10 @@ main {
         width: 100%;
         gap: 2rem;
 
+        a {
+            color: $light;
+        }
+
         .productCard {
             width: 20rem;
             height: 20rem;
@@ -122,7 +126,6 @@ main {
             border-color: rgba(0,0,0,0);
 
             &:hover {
-                cursor: pointer;
                 border-color: $light;
             }
             
