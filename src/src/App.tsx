@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import { AppContext } from './components/ContextProvider';
 import { Header } from './components/Header';
 import { LoginPage } from './pages/LoginPage';
 import { MainPage } from './pages/MainPage';
+import { ProductPage } from './pages/ProductPage';
 
 function App() {
 
@@ -14,14 +15,17 @@ function App() {
         <BrowserRouter>
             <Header />
             
-            <Routes>
-                <Route path='/' element={<MainPage />} />
-                <Route path='/login' element={state.user ? <Navigate to="/" /> : <LoginPage />} />
-            </Routes>
+            <div id="mainContainer">
+                <Routes>
+                    <Route path='/' element={<MainPage />} />
+                    <Route path='/login' element={state.user ? <Navigate to="/" /> : <LoginPage />} />
+                    <Route path='/product/:id' element={<ProductPage />} />
+                </Routes>
 
-            <footer>
-                
-            </footer>
+                <footer>
+                    Footer
+                </footer>
+            </div>
         </BrowserRouter>
     )
 }

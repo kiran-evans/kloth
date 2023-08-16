@@ -1,39 +1,45 @@
-import { AccountCircle, ShoppingCart } from '@mui/icons-material';
-import { Collapse } from '@mui/material';
-import { useState } from 'react';
-import { AccountPopover } from './AccountPopover';
+import { AccountCircle, Search, ShoppingBag } from '@mui/icons-material';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AppContext } from './ContextProvider';
 
 export const Header = () => {
 
-    const [popoverIsOpen, setPopoverIsOpen] = useState(false);
+    const { state } = useContext(AppContext);
 
     return (
         <header>
             <div id="logoContainer">
-                Kloth
+                <Link to='/'>Kloth</Link>
             </div>
 
             <nav id="categoryNav">
-                {/* Get list of categories and show them as a list here */}
+                <ul>
+                    <li>Women</li>
+                    <li>Men</li>
+                    <li>Footwear</li>
+                    <li>Headwear</li>
+                    <li>Outdoor</li>
+                </ul>
             </nav>
 
             <div id="searchContainer">
+                <Search sx={{ fontSize: "1.5em" }} />
                 <input id="search" type="search" placeholder="Search..." />
             </div>
 
             <div id="iconsContainer">
-                <div id="cartIcon">
-                    <ShoppingCart />
-                </div>
-                <div id="accountIcon" onClick={() => setPopoverIsOpen(!popoverIsOpen)}>
-                    <AccountCircle />
-                </div>
+                <Link to='/bag' title='Shopping Bag'>
+                    <div id="bagIcon">
+                        <ShoppingBag sx={{ fontSize: "1em" }} />
+                    </div>
+                </Link>
+                <Link to={state.user ? '/account' : '/login'} title={state.user ? 'Your Account' : 'Login / Create Account'}>
+                    <div id="accountIcon">
+                        <AccountCircle sx={{ fontSize: "1em" }} />
+                    </div>
+                </Link>
             </div>
-
-            {/* Popover */}
-            <Collapse in={popoverIsOpen}>
-                <AccountPopover />
-            </Collapse>
         </header>
     )
 }
