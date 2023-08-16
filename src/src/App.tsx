@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import { AppContext } from './components/ContextProvider';
 import { Header } from './components/Header';
 import { LoginPage } from './pages/LoginPage';

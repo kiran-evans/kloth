@@ -1,0 +1,57 @@
+$light: #e3e3e3;
+$bg-pale: #454545;
+
+body {
+    margin: 0;
+}
+
+header {
+    display: flex;
+    padding: 1em 1em;
+
+    #logoContainer {
+        flex: 1;
+        font-size: 2em;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+    }
+
+    nav#categoryNav {
+        flex: 1;
+    }
+
+    #searchContainer {
+        flex: 2;
+        display: flex;
+        align-items: center;
+        border: 0.1em solid $light;
+        border-radius: 0.4em;
+        padding-left: 0.4em;
+
+        input#search {
+            width: 100%;
+            font-size: 1.3em;
+            border: none;
+            background: none;
+            padding: 0 0.4em;
+            color: $light;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    #iconsContainer {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1em;
+        font-size: 2em;
+
+        & > *:hover {
+            cursor: pointer;
+        }
+    }
+}
