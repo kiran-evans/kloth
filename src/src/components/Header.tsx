@@ -1,4 +1,4 @@
-import { AccountCircle, Search, ShoppingCart } from '@mui/icons-material';
+import { AccountCircle, Search, ShoppingBag } from '@mui/icons-material';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from './ContextProvider';
@@ -29,9 +29,9 @@ export const Header = () => {
             </div>
 
             <div id="iconsContainer">
-                <Link to='/cart' title='Cart'>
-                    <div id="cartIcon">
-                        <ShoppingCart sx={{ fontSize: "1em" }} />
+                <Link to='/bag' title='Shopping Bag'>
+                    <div id="bagIcon">
+                        <ShoppingBag sx={{ fontSize: "1em" }} />
                     </div>
                 </Link>
                 <Link to={state.user ? '/account' : '/login'} title={state.user ? 'Your Account' : 'Login / Create Account'}>

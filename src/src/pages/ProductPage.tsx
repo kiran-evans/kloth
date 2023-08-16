@@ -1,3 +1,4 @@
+import { ShoppingBag } from '@mui/icons-material';
 import { CircularProgress } from '@mui/material';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -31,12 +32,16 @@ export const ProductPage = () => {
     return (
         <main>
             {isFetching ? <CircularProgress /> :
-                <>
+                <div id="productPage">
                     <img src={productData.imageUrl} />
-                    <h1>{productData.name}</h1>
-                    <p>{productData.description}</p>
-                    <p>{productData.price}</p>
-                </>
+                    <div id="productInfo">
+                        <h1>{productData.name}</h1>
+                        <p>{productData.description}</p>
+                        <p>{productData.price}</p>
+
+                        <button><ShoppingBag sx={{ fontSize: "1.2em" }} />&nbsp;Add to bag</button>
+                    </div>
+                </div>
             }
         </main>
     )
