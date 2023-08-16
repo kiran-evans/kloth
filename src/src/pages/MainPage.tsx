@@ -24,9 +24,11 @@ export const MainPage = () => {
 
     return (
         <main>
-            {products.map((p, i) => (
-                <ProductCard key={i} name={p.name} description={p.description} price={p.price} imageUrl={p.imageUrl} />
-            ))}
+            <div id="productsContainer">
+                {products.map((p, i) => (
+                    <ProductCard key={i} name={p.name} description={p.description} price={p.price} imageUrl={p.imageUrl} />
+                ))}
+            </div>
         </main>
     )
 }

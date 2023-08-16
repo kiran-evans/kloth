@@ -5,11 +5,17 @@ export const ProductCard = (props: {
     imageUrl: string
 }) => {
     return (
-        <div>
+        <div className="productCard">
             <img src={props.imageUrl} />
-            <p>{props.name}</p>
-            <p>{props.description}</p>
-            <p>{props.price}</p>
+            <div className="productInfo">
+                <div className="infoText">
+                    <p className="productName">{props.name}</p>
+                    <p className="productDesc">{props.description}</p>
+                </div>
+                <span className="productPrice">
+                    <p>{props.price}</p>
+                </span>
+            </div>
         </div>
     )
 }

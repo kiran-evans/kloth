@@ -1,11 +1,20 @@
 $light: #e3e3e3;
 $bg-pale: #454545;
+$accent: #4949f4;
 
 body {
     margin: 0;
+
+    #root {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 header {
+    flex: 1;
     display: flex;
     padding: 1em 1em;
 
@@ -52,6 +61,82 @@ header {
 
         & > *:hover {
             cursor: pointer;
+        }
+    }
+}
+
+main {
+    flex: 50;
+    overflow-y: auto;
+
+    #productsContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        width: 100%;
+        gap: 2rem;
+
+        .productCard {
+            width: 20rem;
+            height: 20rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 0.2em solid;
+            border-color: rgba(0,0,0,0);
+
+            &:hover {
+                cursor: pointer;
+                border-color: $light;
+            }
+            
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .productInfo {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgb(0,0,0);
+                background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+                padding: 0.8em 0.6em;
+                flex: 1;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                gap: 1em;
+
+                p {
+                    margin: 0;
+                    line-height: 1.1em;
+                }
+
+                .infoText {
+                    text-shadow: 0.1em 0.1em 0.3em rgba(0,0,0,0.3);
+
+                    .productName {
+                        font-weight: bold;
+                        font-size: 1.2em;
+                        margin-top: 1em;
+                        margin-bottom: 0.2em;
+                    }
+
+                    .productDesc {
+                        font-size: 1em;
+                        
+                    }
+                }
+                .productPrice {
+                    font-weight: 600;
+                    background-color: $accent;
+                    padding: 0.2em 0.4em;
+                    border-radius: 0.2em;
+                }
+            }
         }
     }
 }
