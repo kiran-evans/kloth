@@ -14,7 +14,13 @@ export const Header = () => {
             </div>
 
             <nav id="categoryNav">
-                {/* Get list of categories and show them as a list here */}
+                <ul>
+                    <li>Women</li>
+                    <li>Men</li>
+                    <li>Footwear</li>
+                    <li>Headwear</li>
+                    <li>Outdoor</li>
+                </ul>
             </nav>
 
             <div id="searchContainer">
@@ -23,14 +29,11 @@ export const Header = () => {
             </div>
 
             <div id="iconsContainer">
-                {/* Only render the shopping cart if the user is logged in */}
-                {state.user && 
-                    <Link to='/cart' title='Cart'>
-                        <div id="cartIcon">
-                            <ShoppingCart sx={{ fontSize: "1em" }} />
-                        </div>
-                    </Link>
-                }
+                <Link to='/cart' title='Cart'>
+                    <div id="cartIcon">
+                        <ShoppingCart sx={{ fontSize: "1em" }} />
+                    </div>
+                </Link>
                 <Link to={state.user ? '/account' : '/login'} title={state.user ? 'Your Account' : 'Login / Create Account'}>
                     <div id="accountIcon">
                         <AccountCircle sx={{ fontSize: "1em" }} />
