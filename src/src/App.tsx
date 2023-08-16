@@ -15,15 +15,17 @@ function App() {
         <BrowserRouter>
             <Header />
             
-            <Routes>
-                <Route path='/' element={<MainPage />} />
-                <Route path='/login' element={state.user ? <Navigate to="/" /> : <LoginPage />} />
-                <Route path='/product/:id' element={<ProductPage />} />
-            </Routes>
+            <div id="mainContainer">
+                <Routes>
+                    <Route path='/' element={<MainPage />} />
+                    <Route path='/login' element={state.user ? <Navigate to="/" /> : <LoginPage />} />
+                    <Route path='/product/:id' element={<ProductPage />} />
+                </Routes>
 
-            <footer>
-                
-            </footer>
+                <footer>
+                    Footer
+                </footer>
+            </div>
         </BrowserRouter>
     )
 }
