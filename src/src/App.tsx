@@ -5,6 +5,7 @@ import { AppContext } from './components/ContextProvider';
 import { Header } from './components/Header';
 import { LoginPage } from './pages/LoginPage';
 import { MainPage } from './pages/MainPage';
+import { ProductPage } from './pages/ProductPage';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<MainPage />} />
                 <Route path='/login' element={state.user ? <Navigate to="/" /> : <LoginPage />} />
+                <Route path='/product/:id' element={<ProductPage />} />
             </Routes>
 
             <footer>
