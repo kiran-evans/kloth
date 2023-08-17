@@ -1,11 +1,13 @@
 import { AccountCircle, Search, ShoppingBag } from '@mui/icons-material';
-import { useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from './ContextProvider';
 
-export const Header = () => {
+export const Header = (props: { selectedCategory: string, setSelectedCategory: Dispatch<SetStateAction<string>> }) => {
 
     const { state } = useContext(AppContext);
+
+    const availableCategories = ["All", "Women", "Men", "Headwear", "Footwear", "Outdoor"];
 
     return (
         <header>
@@ -15,11 +17,13 @@ export const Header = () => {
 
             <nav id="categoryNav">
                 <ul>
-                    <li>Women</li>
-                    <li>Men</li>
-                    <li>Footwear</li>
-                    <li>Headwear</li>
-                    <li>Outdoor</li>
+                    {availableCategories.map(c => (
+                        <li
+                            key={c}
+                            className={`${props.selectedCategory === c.toLowerCase() && 'selected'}`}
+                            onClick={() => props.setSelectedCategory(c.toLowerCase())}
+                        >{c}</li>
+                    ))}
                 </ul>
             </nav>
 

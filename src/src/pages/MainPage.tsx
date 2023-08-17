@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "../components/ProductCard";
+import { Product } from "../lib/types";
 
-export const MainPage = () => {
-    const [products, setProducts] = useState(Array<{
-        id: string,
-        name: string,
-        description: string,
-        price: string,
-        imageUrl: string
-    }>);
+export const MainPage = (props: { selectedCategory: string }) => {
+    const [products, setProducts] = useState(Array<Product>);
+    const [displayProducts, setDisplayProducts] = useState(Array<Product>);
 
     useEffect(() => {
         (async () => {
@@ -23,11 +19,22 @@ export const MainPage = () => {
         })();
     }, []);
 
+    useEffect(() => {
+        const selectedProducts = Array<Product>();
+        if (props.selectedCategory === "all") return setDisplayProducts([...products]);
+        
+        products.forEach(p => {
+            if (p.categories.includes(props.selectedCategory)) selectedProducts.push(p);
+        });
+        setDisplayProducts([...selectedProducts]);        
+
+    }, [props.selectedCategory, products]);
+
     return (
         <main>
             <div id="productsContainer">
-                {products.map(p => (
-                    <ProductCard key={p.id} id={p.id} name={p.name} description={p.description} price={p.price} imageUrl={p.imageUrl} />
+                {displayProducts.map(p => (
+                    <ProductCard key={p.id} {...p} />
                 ))}
             </div>
         </main>
