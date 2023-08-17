@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "../components/ProductCard";
+import { Product } from "../lib/types";
 
 export const MainPage = () => {
-    const [products, setProducts] = useState(Array<{
-        id: string,
-        name: string,
-        description: string,
-        price: string,
-        imageUrl: string
-    }>);
+    const [products, setProducts] = useState(Array<Product>);
 
     useEffect(() => {
         (async () => {
@@ -27,7 +22,7 @@ export const MainPage = () => {
         <main>
             <div id="productsContainer">
                 {products.map(p => (
-                    <ProductCard key={p.id} id={p.id} name={p.name} description={p.description} price={p.price} imageUrl={p.imageUrl} />
+                    <ProductCard key={p.id} {...p} />
                 ))}
             </div>
         </main>
