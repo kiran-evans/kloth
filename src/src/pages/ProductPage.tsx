@@ -9,7 +9,16 @@ export const ProductPage = () => {
     const { id } = useParams();
 
     const [isFetching, setIsFetching] = useState(false);
-    const [productData, setProductData] = useState({} as Product);
+    const [productData, setProductData] = useState({
+        id: "",
+        name: "",
+        description: "",
+        price: 0,
+        categories: [""],
+        sizes: [""],
+        colours: [""],
+        imageUrl: ""
+    } as Product);
 
     useEffect(() => {
         setIsFetching(true);
@@ -24,6 +33,7 @@ export const ProductPage = () => {
             setIsFetching(false);
         })();
     }, [id]);
+    
 
     return (
         <main>

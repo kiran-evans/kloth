@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.scss';
 import { AppContext } from './components/ContextProvider';
@@ -10,14 +10,15 @@ import { ProductPage } from './pages/ProductPage';
 function App() {
 
     const { state } = useContext(AppContext);
+    const [selectedCategory, setSelectedCategory] = useState("all");
 
     return (
         <BrowserRouter>
-            <Header />
+            <Header selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
             
             <div id="mainContainer">
                 <Routes>
-                    <Route path='/' element={<MainPage />} />
+                    <Route path='/' element={<MainPage selectedCategory={selectedCategory} />} />
                     <Route path='/login' element={state.user ? <Navigate to="/" /> : <LoginPage />} />
                     <Route path='/product/:id' element={<ProductPage />} />
                 </Routes>
