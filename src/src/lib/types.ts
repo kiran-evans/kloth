@@ -10,6 +10,8 @@ export type Product = {
 }
 
 export type CartItem = {
-    product: Product,
-    quantity: number
+    product_id: string,
+    quantity: number,
+    colour: string,
+    size: string
 }

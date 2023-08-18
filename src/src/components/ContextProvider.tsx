@@ -6,7 +6,7 @@ import { CartItem } from "../lib/types";
 
 const initState: AppState = {
     user: {} as User,
-    cart: Array<CartItem>()
+    cartItems: Array<CartItem>()
 };
 
 export const AppContext = createContext<{ state: AppState, dispatch: Dispatch<ContextAction> }>({ state: initState, dispatch: () => {} });
@@ -36,10 +36,10 @@ export const ContextProvider = ({ children }: any) => {
             dispatch({ type: 'SET_CART', payload: Array<CartItem>() });
 
         } else {
-            // Combine contents of cart in state.cart and the cart in the database associated with the now logged in user
+            // Combine contents of cart in state.cartItems and the cart in the database associated with the now logged in user
             const res = await fetch(`${import.meta.env.VITE_API_URL}/cart/${await user.getIdToken()}`, {
                 method: 'PATCH',
-                body: JSON.stringify({ items: state.cart })
+                body: JSON.stringify({ items: state.cartItems })
             });
 
             dispatch({ type: 'SET_USER', payload: user });

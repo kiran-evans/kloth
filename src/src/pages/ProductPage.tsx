@@ -1,12 +1,15 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { CircularProgress } from '@mui/material';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Product } from '../lib/types';
+import { AppContext } from '../components/ContextProvider';
+import { CartItem, Product } from '../lib/types';
+import { updateCart } from '../lib/util';
 
 export const ProductPage = () => {
 
     const { id } = useParams();
+    const { state, dispatch } = useContext(AppContext);
 
     const [isFetching, setIsFetching] = useState(false);
     const [productData, setProductData] = useState({
@@ -28,14 +31,22 @@ export const ProductPage = () => {
                 setProductData(await res.json());
 
             } catch (err: any) {
-                console.error(err);                
+                console.error(err);
             }
             setIsFetching(false);
         })();
     }, [id]);
 
-    const handleAddToCart = async () => {
+    const [cartItem, setCartItem] = useState({
+        product_id: productData.id,
+        quantity: 1,
+        size: "",
+        colour: ""
+    } as CartItem);
 
+    const handleAddToCart = async () => {
+        const newCart = [...state.cartItems, cartItem]
+        await updateCart(newCart, state.user, dispatch);
     }
     
 
@@ -52,18 +63,18 @@ export const ProductPage = () => {
                         <label htmlFor="selectSize">Size</label>
                         <select id="selectSize">
                             {productData.sizes.map(size => (
-                                <option>{size}</option>
+                                <option onSelect={() => setCartItem({ ...cartItem, size: size })}>{size}</option>
                             ))}
                         </select>
                         
                         <label htmlFor="selectColour">Colour</label>
                         <select id="selectColour">
                             {productData.colours.map(colour => (
-                                <option>{colour}</option>
+                                <option onSelect={() => setCartItem({ ...cartItem, colour: colour })}>{colour}</option>
                             ))}
                         </select>
 
-                        <button><ShoppingBag sx={{ fontSize: "1.2em" }} />&nbsp;Add to bag</button>
+                        <button onClick={() => handleAddToCart()}><ShoppingBag sx={{ fontSize: "1.2em" }} />&nbsp;Add to bag</button>
                     </div>
                 </div>
             }

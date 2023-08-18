@@ -4,7 +4,7 @@ import { CartItem } from "./types";
 
 export type AppState = {
     user: User,
-    cart: Array<CartItem>
+    cartItems: Array<CartItem>
 }
 
 export type ContextAction = {
@@ -19,7 +19,7 @@ export const stateReducer = ((state, action) => {
             newState.user = action.payload as User;
             break;
         case 'SET_CART':
-            newState.cart = action.payload as Array<CartItem>;
+            newState.cartItems = action.payload as Array<CartItem>;
             break;
         default:
             return state;
