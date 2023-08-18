@@ -14,31 +14,49 @@ export const AppContext = createContext<{ state: AppState, dispatch: Dispatch<Co
 export const ContextProvider = ({ children }: any) => {
     const [state, dispatch] = useReducer(stateReducer, initState);
 
-    // On app load, login the user anonymously
+    // On app load, login the user anonymously if there is none logged in already
     useEffect(() => {
-        signInAnonymously(fb.auth);
+        if (!fb.auth.currentUser) signInAnonymously(fb.auth);
     }, []);
 
     onAuthStateChanged(fb.auth, async (user) => {
+        console.log("auth state changed", user);
+        
         if (!user) {
+            localStorage.clear();
+
             // If Firebase Auth user has become null, sign in a new anonymous user
             // The state.user object should NEVER be null, so it must be replaced whenever onAuthStateChanged produces null
-            const userCredential = await signInAnonymously(fb.auth);
+            await signInAnonymously(fb.auth);
+            return;
+        }
+        
+        // Don't need to sign in again if there's already a user signed in
+        if (localStorage.getItem("user")) return;
 
+        localStorage.setItem("user", JSON.stringify(user));
+        // If this is a user which has just been signed in anonymously, we need to create a new user in the db
+        if (user.isAnonymous) {
             // Create new user in the db, using anonymous idToken
-            const idToken = await userCredential.user.getIdToken();
+            const idToken = await user.getIdToken();
             await fetch(`${import.meta.env.VITE_API_URL}/user`, {
                 method: "POST",
-                body: JSON.stringify({ idToken })
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ idToken: idToken })
             });
 
-            dispatch({ type: 'SET_USER', payload: userCredential.user });
+            dispatch({ type: 'SET_USER', payload: user });
             dispatch({ type: 'SET_CART', payload: Array<CartItem>() });
 
         } else {
             // Combine contents of cart in state.cartItems and the cart in the database associated with the now logged in user
             const res = await fetch(`${import.meta.env.VITE_API_URL}/cart/${await user.getIdToken()}`, {
                 method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({ items: state.cartItems })
             });
 
