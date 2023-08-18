@@ -8,3 +8,8 @@ export type Product = {
     colours: string[],
     imageUrl: string
 }
+
+export type CartItem = {
+    product: Product,
+    quantity: number
+}

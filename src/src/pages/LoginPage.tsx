@@ -1,13 +1,16 @@
 import { Google } from '@mui/icons-material';
 import { passwordStrength } from 'check-password-strength';
-import { createUserWithEmailAndPassword, getRedirectResult, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
-import { FormEvent, useState } from "react";
+import { EmailAuthProvider, GoogleAuthProvider, getRedirectResult, linkWithCredential, signInWithRedirect } from 'firebase/auth';
+import { FormEvent, useContext, useState } from "react";
+import { AppContext } from '../components/ContextProvider';
 import { fb } from "../lib/firebase";
 
 export const LoginPage = () => {
     const [isNewUser, setIsNewUser] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [isFetching, setIsFetching] = useState(false);
+
+    const { state } = useContext(AppContext);
 
     const [credentials, setCredentials] = useState({
         email: "",
@@ -16,7 +19,15 @@ export const LoginPage = () => {
     });
 
     // Login handlers
-    // Third-party login handlers also double as sign up handlers as they automatically login the Firebase Auth user after successful sign up
+
+    /*
+        When the user logs in, the handling of the Firebase Auth user is performed automatically by the Firebase SDK.
+        The Firebase SDK simply provides the linkWithCredential() method which is the only thing performed on this page.
+        Calling linkWithCredential() automatically triggers the onAuthStateChange() method which is managed by ContextProvider.tsx.
+        The user's data in the app state and in the database are handled by the onAuthStateChange() callback,
+            meaning no calls to the server need to happen on this page (thanks to the Firebase SDK automatically updating the Auth State).
+    */
+
     const handleLoginWithEmail = async (e: FormEvent) => {
         e.preventDefault();
             
@@ -24,7 +35,10 @@ export const LoginPage = () => {
         
         try {
             // Sign in Firebase Auth user with email and password
-            await signInWithEmailAndPassword(fb.auth, credentials.email, credentials.password);            
+            const credential = EmailAuthProvider.credential(credentials.email, credentials.password);
+
+            // Upgrade anonymous user to auth user
+            await linkWithCredential(state.user, credential);
 
         } catch (err: any) {
             setErrorMsg(String(err));
@@ -33,14 +47,22 @@ export const LoginPage = () => {
         setIsFetching(false);
     }
 
+    // Third-party login handlers also double as sign up handlers as they automatically login the Firebase Auth user after successful sign up
     const handleLoginWithGoogle = async () => {            
         setIsFetching(true);
 
         try {
+            // Sign in Firebase Auth user with Google
             await signInWithRedirect(fb.auth, fb.google);
 
             const userCredential = await getRedirectResult(fb.auth);
             if (!userCredential) throw "Failed to get redirect result from Google.";
+
+            const credential = GoogleAuthProvider.credentialFromResult(userCredential);
+            if (!credential) throw "Failed to get credential from result.";
+
+            // Upgrade anonymous user to auth user
+            await linkWithCredential(state.user, credential);
 
         } catch (err: any) {
             setErrorMsg(String(err));
@@ -61,24 +83,7 @@ export const LoginPage = () => {
         if (!passwordAnalysis.contains.includes('symbol')) return setErrorMsg("Password must contain a special character.");
         if (!passwordAnalysis.contains.includes('number')) return setErrorMsg("Password must contain a number.");
             
-        setIsFetching(true);
-
-        try {
-            // Create new Firebase Auth user (this also establishes a session)
-            const userCredential = await createUserWithEmailAndPassword(fb.auth, credentials.email, credentials.password);
-
-            // Get an id token and pass it to the server to be used to create PGDB entry
-            const idToken = await userCredential.user.getIdToken();            
-            await fetch(`${import.meta.env.VITE_API_URL}/user`, {
-                method: "POST",
-                body: JSON.stringify({ idToken })
-            });
-
-        } catch (err: any) {
-            setErrorMsg(String(err));
-        }
-        
-        setIsFetching(false);
+        handleLoginWithEmail(e);
     }
 
     return (

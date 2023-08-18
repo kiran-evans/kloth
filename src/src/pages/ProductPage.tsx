@@ -33,6 +33,10 @@ export const ProductPage = () => {
             setIsFetching(false);
         })();
     }, [id]);
+
+    const handleAddToCart = async () => {
+
+    }
     
 
     return (
