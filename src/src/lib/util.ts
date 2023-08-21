@@ -3,24 +3,21 @@ import { CartItem } from "./types";
 
 export const updateCart = async (newCartItems: Array<CartItem>) => {
     // Send this new cart to the server to replace the one in the db
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/cart/${await fb.auth.currentUser?.getIdToken()}`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/cart/${await fb.auth.currentUser?.getIdToken()}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({ items: newCartItems })
     });
-    if (!res.ok) throw res.statusText;
-
-    const newCart: Array<CartItem> = await res.json();
-    if (!newCart) throw `res.json() was ${JSON.stringify(newCart)}`;
-    
-    return newCart;
 }
 
 export const addToCart = async (cartItem: CartItem, existingCartItems: Array<CartItem>) => {
     // If the existing cart is empty, just add the cart item
-    if (!existingCartItems.length) return await updateCart([cartItem]);
+    if (!existingCartItems.length) {
+        await updateCart([cartItem]);
+        return [cartItem];
+    }
     
     // Only spread the existingCartItems if it is not empty
     const newCartItems = [...existingCartItems];
@@ -39,5 +36,6 @@ export const addToCart = async (cartItem: CartItem, existingCartItems: Array<Car
         if (i >= existingCartItems.length - 1) newCartItems.push(cartItem);
     }
 
-    return await updateCart(newCartItems);
+    await updateCart(newCartItems);
+    return newCartItems;
 }

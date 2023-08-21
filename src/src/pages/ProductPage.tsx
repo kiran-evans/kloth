@@ -52,6 +52,8 @@ export const ProductPage = () => {
     }, [id]);
 
     const handleAddToCart = async () => {
+        console.log(state.cartItems);
+        
         const updatedCart = await addToCart(cartItem, state.cartItems);
         dispatch({ type: 'SET_CART', payload: updatedCart });
     }
