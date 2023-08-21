@@ -19,9 +19,7 @@ export const ContextProvider = ({ children }: any) => {
         if (!fb.auth.currentUser) signInAnonymously(fb.auth);
     }, []);
 
-    onAuthStateChanged(fb.auth, async (user) => {
-        console.log("auth state changed", user);
-        
+    onAuthStateChanged(fb.auth, async (user) => {        
         if (!user) {
             localStorage.clear();
 
@@ -32,9 +30,8 @@ export const ContextProvider = ({ children }: any) => {
         }
         
         // Don't need to sign in again if there's already a user signed in
-        if (localStorage.getItem("user")) return;
+        if (localStorage.getItem("user") && localStorage.getItem("cart")) return;
 
-        localStorage.setItem("user", JSON.stringify(user));
         // If this is a user which has just been signed in anonymously, we need to create a new user in the db
         if (user.isAnonymous) {
             // Create new user in the db, using anonymous idToken
@@ -47,7 +44,10 @@ export const ContextProvider = ({ children }: any) => {
                 body: JSON.stringify({ idToken: idToken })
             });
 
+            localStorage.setItem("user", JSON.stringify(user));
             dispatch({ type: 'SET_USER', payload: user });
+
+            localStorage.setItem("cart", JSON.stringify(Array<CartItem>()));
             dispatch({ type: 'SET_CART', payload: Array<CartItem>() });
 
         } else {
@@ -60,7 +60,10 @@ export const ContextProvider = ({ children }: any) => {
                 body: JSON.stringify({ items: state.cartItems })
             });
 
+            localStorage.setItem("user", JSON.stringify(user));
             dispatch({ type: 'SET_USER', payload: user });
+
+            localStorage.setItem("cart", JSON.stringify((await res.json()).items));
             dispatch({ type: 'SET_CART', payload: (await res.json()).items });
         }
     });

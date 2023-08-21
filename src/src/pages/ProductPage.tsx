@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from '../components/ContextProvider';
 import { CartItem, Product } from '../lib/types';
-import { updateCart } from '../lib/util';
+import { addToCart } from '../lib/util';
 
 export const ProductPage = () => {
 
@@ -23,12 +23,26 @@ export const ProductPage = () => {
         imageUrl: ""
     } as Product);
 
+    const [cartItem, setCartItem] = useState({
+        product_id: productData.id,
+        quantity: 1,
+        size: "",
+        colour: ""
+    } as CartItem);
+
     useEffect(() => {
         setIsFetching(true);
         (async () => {
             try {
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/product/${id}`);
-                setProductData(await res.json());
+                const newBody: Product = await res.json()
+                setProductData(newBody);
+                setCartItem({
+                    product_id: newBody.id,
+                    size: newBody.sizes[0],
+                    colour: newBody.colours[0],
+                    quantity: 1
+                } as CartItem);
 
             } catch (err: any) {
                 console.error(err);
@@ -37,16 +51,9 @@ export const ProductPage = () => {
         })();
     }, [id]);
 
-    const [cartItem, setCartItem] = useState({
-        product_id: productData.id,
-        quantity: 1,
-        size: "",
-        colour: ""
-    } as CartItem);
-
     const handleAddToCart = async () => {
-        const newCart = [...state.cartItems, cartItem]
-        await updateCart(newCart, state.user, dispatch);
+        const updatedCart = await addToCart(cartItem, state.cartItems);
+        dispatch({ type: 'SET_CART', payload: updatedCart });
     }
     
 

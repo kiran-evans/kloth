@@ -18,8 +18,8 @@ export const stateReducer = ((state, action) => {
         case 'SET_USER':
             newState.user = action.payload as User;
             break;
-        case 'SET_CART':
-            newState.cartItems = action.payload as Array<CartItem>;
+        case 'SET_CART':            
+            newState.cartItems = action.payload as Array<CartItem>;            
             break;
         default:
             return state;
