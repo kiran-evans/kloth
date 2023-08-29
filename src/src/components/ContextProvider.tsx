@@ -51,9 +51,9 @@ export const ContextProvider = ({ children }: any) => {
             dispatch({ type: 'SET_CART', payload: Array<string>() });
 
         } else {
-            // Combine contents of cart in state.cartItems and the cart in the database associated with the now logged in user
+            // Replace the user's existing cart with the new session
             const res = await fetch(`${import.meta.env.VITE_API_URL}/cart/${await user.getIdToken()}`, {
-                method: 'PATCH',
+                method: 'PUT',
                 headers: {
                     "Content-Type": "application/json"
                 },
