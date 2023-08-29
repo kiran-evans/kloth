@@ -20,7 +20,7 @@ export const ProductPage = () => {
         categories: [""],
         sizes: [""],
         colours: [""],
-        imageUrl: ""
+        img_url: ""
     } as Product);
 
     const [cartItem, setCartItem] = useState({
@@ -63,7 +63,7 @@ export const ProductPage = () => {
         <main>
             {isFetching ? <CircularProgress /> :
                 <div id="productPage">
-                    <img src={productData.imageUrl} />
+                    <img src={productData.img_url} />
                     <div id="productInfo">
                         <h1>{productData.name}</h1>
                         <p>{productData.description}</p>
