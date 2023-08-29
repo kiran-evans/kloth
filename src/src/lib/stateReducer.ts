@@ -1,19 +1,24 @@
+import { User } from "firebase/auth";
 import { Reducer } from "react";
 
 export type AppState = {
-    user: any
+    user: User,
+    cartItemIds: Array<string>
 }
 
 export type ContextAction = {
     type: string,
-    payload: any
+    payload: Array<string> | User
 }
 
 export const stateReducer = ((state, action) => {
     const newState = { ...state };
     switch (action.type) {
         case 'SET_USER':
-            newState.user = action.payload;
+            newState.user = action.payload as User;
+            break;
+        case 'SET_CART':            
+            newState.cartItemIds = action.payload as Array<string>;
             break;
         default:
             return state;
