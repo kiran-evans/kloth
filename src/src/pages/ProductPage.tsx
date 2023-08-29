@@ -72,16 +72,16 @@ export const ProductPage = () => {
                         <p>£{productData.price}</p>
                         
                         <label htmlFor="selectSize">Size</label>
-                        <select id="selectSize">
+                        <select id="selectSize" onChange={(e) => setCartItem({ ...cartItem, size: e.target.value })}>
                             {productData.sizes.map(size => (
-                                <option onSelect={() => setCartItem({ ...cartItem, size: size })}>{size}</option>
+                                <option value={size}>{size}</option>
                             ))}
                         </select>
                         
                         <label htmlFor="selectColour">Colour</label>
-                        <select id="selectColour">
+                        <select id="selectColour" onChange={(e) => setCartItem({ ...cartItem, colour: e.target.value })}>
                             {productData.colours.map(colour => (
-                                <option onSelect={() => setCartItem({ ...cartItem, colour: colour })}>{colour}</option>
+                                <option value={colour}>{colour}</option>
                             ))}
                         </select>
 
