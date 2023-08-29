@@ -1,15 +1,14 @@
 import { User } from "firebase/auth";
 import { Reducer } from "react";
-import { CartItem } from "./types";
 
 export type AppState = {
     user: User,
-    cartItems: Array<CartItem>
+    cartItemIds: Array<string>
 }
 
 export type ContextAction = {
     type: string,
-    payload: Array<CartItem> | User
+    payload: Array<string> | User
 }
 
 export const stateReducer = ((state, action) => {
@@ -19,7 +18,7 @@ export const stateReducer = ((state, action) => {
             newState.user = action.payload as User;
             break;
         case 'SET_CART':            
-            newState.cartItems = action.payload as Array<CartItem>;            
+            newState.cartItemIds = action.payload as Array<string>;
             break;
         default:
             return state;

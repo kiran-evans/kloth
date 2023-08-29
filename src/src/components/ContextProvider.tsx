@@ -6,7 +6,7 @@ import { CartItem } from "../lib/types";
 
 const initState: AppState = {
     user: {} as User,
-    cartItems: Array<CartItem>()
+    cartItemIds: Array<string>()
 };
 
 export const AppContext = createContext<{ state: AppState, dispatch: Dispatch<ContextAction> }>({ state: initState, dispatch: () => {} });
@@ -48,7 +48,7 @@ export const ContextProvider = ({ children }: any) => {
             dispatch({ type: 'SET_USER', payload: user });
 
             localStorage.setItem("cart", JSON.stringify(Array<CartItem>()));
-            dispatch({ type: 'SET_CART', payload: Array<CartItem>() });
+            dispatch({ type: 'SET_CART', payload: Array<string>() });
 
         } else {
             // Combine contents of cart in state.cartItems and the cart in the database associated with the now logged in user
@@ -57,7 +57,7 @@ export const ContextProvider = ({ children }: any) => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ items: state.cartItems })
+                body: JSON.stringify({ items: state.cartItemIds })
             });
 
             localStorage.setItem("user", JSON.stringify(user));
