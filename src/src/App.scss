@@ -254,6 +254,22 @@ header {
                 }
             }
         }
+
+        #cartPage {
+            display: flex;
+            flex-direction: column;
+
+            #cartDisplayItemsContainer {
+                display: flex;
+                gap: 1em;
+
+                .cartDisplayItemCard {
+                    display: flex;
+                    gap: 1em;
+                    border: 1px solid $light;
+                }
+            }
+        }
     }
 
     footer {
