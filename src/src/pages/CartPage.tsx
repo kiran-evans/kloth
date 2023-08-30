@@ -22,7 +22,21 @@ export const CartPage = () => {
             setCartDisplayItems(tempCartDisplayItems);
             setTotal(Math.floor(tempTotal * 100)/100);
         })();
-    }, [state.cartItemIds]);    
+    }, [state.cartItemIds]);
+    
+    const handleCheckout = async () => {
+        await fetch(`${import.meta.env.VITE_API_URL}/checkout/${await state.user?.getIdToken()}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                product: state.user?.uid,
+                unit_amount: total*100,
+                currency: 'GBP'
+            })
+        });
+    }
 
     return (
         <main>
@@ -34,7 +48,7 @@ export const CartPage = () => {
                     ))}
                 </div>
                 <h2>Total: £{total}</h2>
-                <button>Checkout</button>
+                <button onClick={() => handleCheckout()}>Checkout</button>
             </div>
         </main>
     )

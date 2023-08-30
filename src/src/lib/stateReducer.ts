@@ -18,9 +18,7 @@ export const stateReducer = ((state, action) => {
             newState.user = action.payload as User;
             break;
         case 'SET_CART':            
-            newState.cartItemIds = action.payload as Array<string>;
-            console.log(action.payload);
-            
+            newState.cartItemIds = action.payload as Array<string>;            
             break;
         default:
             return state;

@@ -1,7 +1,7 @@
 import { ShoppingBag } from '@mui/icons-material';
 import { CircularProgress } from '@mui/material';
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from '../components/ContextProvider';
 import { CartItem, Product } from '../lib/types';
 import { addToCart } from '../lib/util';
@@ -10,6 +10,7 @@ export const ProductPage = () => {
 
     const { id } = useParams();
     const { state, dispatch } = useContext(AppContext);
+    const navigator = useNavigate();
 
     const [isFetching, setIsFetching] = useState(false);
     const [productData, setProductData] = useState({
@@ -52,10 +53,10 @@ export const ProductPage = () => {
     }, [id]);
 
     const handleAddToCart = async () => {
-        console.log("cart before", state.cartItemIds);
+        // Prompt the user to login if they aren't already logged in
+        if (!state.user) return navigator("/login");
         
         const updatedCartItemIds = await addToCart(cartItem);
-        console.log("cart after", updatedCartItemIds);
 
         dispatch({ type: 'SET_CART', payload: updatedCartItemIds });
     }
@@ -74,14 +75,14 @@ export const ProductPage = () => {
                         <label htmlFor="selectSize">Size</label>
                         <select id="selectSize" onChange={(e) => setCartItem({ ...cartItem, size: e.target.value })}>
                             {productData.sizes.map(size => (
-                                <option value={size}>{size}</option>
+                                <option value={size} key={size}>{size}</option>
                             ))}
                         </select>
                         
                         <label htmlFor="selectColour">Colour</label>
                         <select id="selectColour" onChange={(e) => setCartItem({ ...cartItem, colour: e.target.value })}>
                             {productData.colours.map(colour => (
-                                <option value={colour}>{colour}</option>
+                                <option value={colour} key={colour}>{colour}</option>
                             ))}
                         </select>
 
