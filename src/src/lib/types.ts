@@ -15,3 +15,8 @@ export type CartItem = {
     colour: string,
     size: string
 }
+
+export type CartDisplayItem = {
+    cartItemData: CartItem;
+    productData: Product;
+}

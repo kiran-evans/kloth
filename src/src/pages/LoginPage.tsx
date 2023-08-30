@@ -1,16 +1,13 @@
 import { Google } from '@mui/icons-material';
 import { passwordStrength } from 'check-password-strength';
-import { EmailAuthProvider, GoogleAuthProvider, getRedirectResult, linkWithCredential, signInWithRedirect } from 'firebase/auth';
-import { FormEvent, useContext, useState } from "react";
-import { AppContext } from '../components/ContextProvider';
+import { signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
+import { FormEvent, useState } from "react";
 import { fb } from "../lib/firebase";
 
 export const LoginPage = () => {
     const [isNewUser, setIsNewUser] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [isFetching, setIsFetching] = useState(false);
-
-    const { state } = useContext(AppContext);
 
     const [credentials, setCredentials] = useState({
         email: "",
@@ -34,12 +31,7 @@ export const LoginPage = () => {
         setIsFetching(true);
         
         try {
-            // Sign in Firebase Auth user with email and password
-            const credential = EmailAuthProvider.credential(credentials.email, credentials.password);
-
-            // Upgrade anonymous user to auth user
-            await linkWithCredential(state.user, credential);
-
+            await signInWithEmailAndPassword(fb.auth, credentials.email, credentials.password);
         } catch (err: any) {
             setErrorMsg(String(err));
         }
@@ -54,15 +46,6 @@ export const LoginPage = () => {
         try {
             // Sign in Firebase Auth user with Google
             await signInWithRedirect(fb.auth, fb.google);
-
-            const userCredential = await getRedirectResult(fb.auth);
-            if (!userCredential) throw "Failed to get redirect result from Google.";
-
-            const credential = GoogleAuthProvider.credentialFromResult(userCredential);
-            if (!credential) throw "Failed to get credential from result.";
-
-            // Upgrade anonymous user to auth user
-            await linkWithCredential(state.user, credential);
 
         } catch (err: any) {
             setErrorMsg(String(err));
@@ -89,7 +72,7 @@ export const LoginPage = () => {
     return (
         <main>
             {isNewUser ?
-                <>
+                <div id="loginPage">
                     <h1>Sign Up</h1>
 
                     <form id="loginForm" onSubmit={e => handleSignUpWithEmail(e)}>
@@ -111,9 +94,9 @@ export const LoginPage = () => {
                         <button disabled={isFetching} onClick={() => handleLoginWithGoogle()}><Google />&nbsp;Sign Up with Google</button>
                     </>}
                     <a title="Login" onClick={() => setIsNewUser(false)}>Already have an account?</a>
-                </>
+                </div>
                 :
-                <>
+                <div id="loginPage">
                     <h1>Login</h1>
 
                     <form id="loginForm" onSubmit={e => handleLoginWithEmail(e)}>
@@ -131,7 +114,7 @@ export const LoginPage = () => {
                         <button disabled={isFetching} onClick={() => handleLoginWithGoogle()}><Google />&nbsp;Login with Google</button>
                     </>}
                     <a title="Sign Up" onClick={() => setIsNewUser(true)}>Don't have an account?</a>
-                </>            
+                </div>            
             }
 
         </main>
