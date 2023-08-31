@@ -1,0 +1,280 @@
+$light: #e3e3e3;
+$bg-pale: #454545;
+$accent: #4949f4;
+
+body {
+    margin: 0;
+
+    #root {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+header {
+    flex: 1;
+    display: flex;
+    padding: 1em 1em;
+    z-index: 10;
+    border-top: 0.2em solid $accent;
+    box-shadow:  0px 0px 30px 1em rgba(0, 0, 0, 1);
+    -webkit-box-shadow:  0 0 1em 0.5em rgba(0, 0, 0, 0.5);
+
+    #logoContainer {
+        flex: 1;
+        font-size: 2em;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+
+        a {
+            color: $light;
+            text-decoration: none;
+        }
+    }
+
+    nav#categoryNav {
+        flex: 4;
+        display: flex;
+        align-items: center;
+
+        ul {
+            display: flex;
+            list-style-type: none;
+            margin-block: 0;
+            margin-inline: 0;
+            padding-inline: 0;
+
+            li {
+                font-size: 1.2em;
+                border: 0.1em solid;
+                border-color: rgba(0,0,0,0);
+                border-radius: 1em;
+                padding: 0.2em 1em;
+                cursor: pointer;
+
+                &.selected {
+                    background-color: $bg-pale;
+                    border-color: $light;
+                }
+            }
+        }
+    }
+
+    #searchContainer {
+        flex: 4;
+        display: flex;
+        align-items: center;
+        border: 0.1em solid $light;
+        border-radius: 2em;
+        padding-left: 0.6em;
+        padding-right: 0.2em;
+
+        input#search {
+            width: 100%;
+            font-size: 1.3em;
+            border: none;
+            background: none;
+            padding: 0 0.4em;
+            color: $light;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    #iconsContainer {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1em;
+        font-size: 2em;
+
+        a {
+            color: $light;
+
+            div {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}
+
+#mainContainer {
+    flex: 50;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+
+    main {
+        padding: 1em 2em;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+
+        #loginPage {
+            
+            form#loginForm {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 1em;
+                font-size: 1.2em;
+
+                input {
+                    font-size: 1em;
+                    padding: 0.5em 0.8em;
+                    border-radius: 1em;
+                    border: 1px solid $light;
+                    margin-top: 0.2em;
+                    margin-bottom: 0.5em;
+                }
+
+                button {
+                    margin-top: 0.5em;
+                    align-self: flex-start;
+                    font-size: 1em;
+                    padding: 0.4em 0.6em;
+                    border-radius: 1em;
+                    border: none;
+                }
+            }
+        }
+
+        #productsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            width: 100%;
+            gap: 3rem;
+
+            a {
+                color: $light;
+                width: 20rem;
+                height: 20rem;
+
+                .productCard {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    border: 0.2em solid;
+                    border-color: rgba(0,0,0,0);
+
+                    &:hover {
+                        border-color: $light;
+                    }
+                    
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    .productInfo {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        background: rgb(0,0,0);
+                        background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+                        padding: 0.8em 0.6em;
+                        flex: 1;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-end;
+                        gap: 1em;
+
+                        p {
+                            margin: 0;
+                            line-height: 1.1em;
+                        }
+
+                        .infoText {
+                            text-shadow: 0.1em 0.1em 0.3em rgba(0,0,0,0.3);
+
+                            .productName {
+                                font-weight: bold;
+                                font-size: 1.2em;
+                                margin-top: 1em;
+                                margin-bottom: 0.2em;
+                            }
+
+                            .productDesc {
+                                font-size: 1em;
+                                
+                            }
+                        }
+                        .productPrice {
+                            font-weight: 600;
+                            background-color: $accent;
+                            padding: 0.3em 0.5em;
+                            border-radius: 1em;
+                        }
+                    }
+                }
+            }
+        }            
+
+        #productPage {
+            max-width: 950px;
+            display: flex;
+            gap: 5em;
+            margin-top: 2em;
+
+            img {
+                width: 30em;
+                height: 30em;
+                object-fit: cover;
+            }
+
+            #productInfo {
+                
+                h1 {
+                    margin-top: 0;
+                    line-height: 1em;
+                }
+                
+                button {
+                    display: flex;
+                    align-items: center;
+                    font-size: 1.2em;
+                    padding: 0.4em 0.6em;
+                    border-radius: 1em;
+                    border: 0.1em solid;
+                    border-color: rgba(0,0,0,0);
+                    background-color: $accent;
+
+                    &:hover {
+                        border-color: $light;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        #cartPage {
+            display: flex;
+            flex-direction: column;
+
+            #cartDisplayItemsContainer {
+                display: flex;
+                gap: 1em;
+
+                .cartDisplayItemCard {
+                    display: flex;
+                    gap: 1em;
+                    border: 1px solid $light;
+                }
+            }
+        }
+    }
+
+    footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
