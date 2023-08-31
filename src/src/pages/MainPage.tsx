@@ -13,6 +13,9 @@ export const MainPage = (props: { selectedCategory: string }) => {
             if (urlSearchParams.get('payment_success')) {
                 await fetch(`${import.meta.env.VITE_API_URL}/order/${urlSearchParams.get('order_id')}`, {
                     method: 'PATCH',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify({
                         paid: urlSearchParams.get('payment_success')
                     })
