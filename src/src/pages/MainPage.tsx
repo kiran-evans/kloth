@@ -6,7 +6,7 @@ import { Product } from "../lib/types";
 export const MainPage = (props: { selectedCategory: string }) => {
     const [products, setProducts] = useState(Array<Product>);
     const [displayProducts, setDisplayProducts] = useState(Array<Product>);
-    const [urlSearchParams, setUrlSearchParams] = useSearchParams();
+    const [urlSearchParams] = useSearchParams();
 
     useEffect(() => {
         (async () => {
@@ -22,7 +22,7 @@ export const MainPage = (props: { selectedCategory: string }) => {
                 });
             }
         })();
-    }, []);
+    }, [urlSearchParams]);
 
     useEffect(() => {
         (async () => {
