@@ -25,17 +25,16 @@ export const CartPage = () => {
     }, [state.cartItemIds]);
     
     const handleCheckout = async () => {
-        await fetch(`${import.meta.env.VITE_API_URL}/checkout/${await state.user?.getIdToken()}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/checkout/${await state.user?.getIdToken()}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                product: state.user?.uid,
-                unit_amount: total*100,
-                currency: 'GBP'
-            })
+            }
         });
+        const body = await res.json();
+        console.log(body);
+        
+        window.location = body.url;
     }
 
     return (
