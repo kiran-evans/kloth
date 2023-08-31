@@ -2,7 +2,7 @@ import { User } from "firebase/auth";
 import { Reducer } from "react";
 
 export type AppState = {
-    user: User,
+    user: User | null,
     cartItemIds: Array<string>
 }
 
@@ -18,7 +18,7 @@ export const stateReducer = ((state, action) => {
             newState.user = action.payload as User;
             break;
         case 'SET_CART':            
-            newState.cartItemIds = action.payload as Array<string>;
+            newState.cartItemIds = action.payload as Array<string>;            
             break;
         default:
             return state;
