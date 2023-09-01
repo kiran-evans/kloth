@@ -256,18 +256,52 @@ header {
         }
 
         #cartPage {
-            display: flex;
-            flex-direction: column;
 
             #cartDisplayItemsContainer {
                 display: flex;
+                flex-wrap: wrap;
                 gap: 1em;
 
                 .cartDisplayItemCard {
                     display: flex;
                     gap: 1em;
                     border: 1px solid $light;
+                    padding: 0em 1em;
                 }
+            }
+
+            button {
+                font-size: 1.3em;
+                background-color: $accent;
+                border: none;
+                padding: 0.4em 0.5em;
+                border-radius: 1em;
+                font-weight: bold;
+            }
+        }
+
+        #accountPage {
+
+            #ordersContainer {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2em;
+
+                .orderCard {
+                    border: 1px solid $light;
+                    padding: 0em 1em;
+
+                    .itemsContainer {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 0.5em;
+
+                        .orderItem {
+                            border: 1px solid $light;
+                            padding: 0em 0.5em;
+                        }
+                    }
+                }   
             }
         }
     }

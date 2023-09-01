@@ -20,3 +20,18 @@ export type CartDisplayItem = {
     cartItemData: CartItem;
     productData: Product;
 }
+
+export type OrderItem = {
+    name: string;
+    quantity: number;
+    colour: string;
+    size: string;
+    total: number;
+}
+
+export type Order = {
+    id: string;
+    items: Array<OrderItem>;
+    total: number;
+    paid: boolean;
+}
