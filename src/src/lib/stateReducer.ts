@@ -8,7 +8,7 @@ export type AppState = {
 
 export type ContextAction = {
     type: string,
-    payload: Array<string> | User
+    payload: Array<string> | User | null
 }
 
 export const stateReducer = ((state, action) => {
