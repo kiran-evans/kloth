@@ -1,14 +1,25 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../components/ContextProvider";
+import { fb } from "../lib/firebase";
 
 export const AccountPage = () => {
 
-    const { state } = useContext(AppContext);
+    const { state, dispatch } = useContext(AppContext);
+    const navigator = useNavigate();
+
+    const handleLogout = async () => {
+        await fb.auth.signOut();
+        dispatch({ type: 'SET_USER', payload: null });
+        dispatch({ type: 'SET_CART', payload: [] });
+        navigator('/');
+    }
 
     return (
         <main>
             <div id="accountPage">
-                <h1>{state.user?.uid} is logged in</h1>
+                <p>Email: {state.user?.email}</p>
+                <button onClick={() => handleLogout()}>Logout</button>
             </div>
         </main>
     )
